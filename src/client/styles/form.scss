@@ -1,0 +1,51 @@
+input {
+  padding: 5px 20px;
+  line-height: 16px;
+  margin: 10px 0;
+  border-radius: 12px;
+  padding: 12px;
+  outline: none;
+  border: none;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.warning {
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s;
+
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+  border-radius: 12px;
+  border: none;
+
+  text-align: center;
+  background-color: red;
+  color: #000;
+}
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.submit {
+  border: none;
+  border-radius: 12px;
+  background: #000000;
+  color: #fff;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 500px) {
+  .form {
+    padding: 12px;
+  }
+}

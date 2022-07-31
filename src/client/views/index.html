@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Travel App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/resets.css">
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/header.css">
+  <link rel="stylesheet" href="/styles/form.css">
+  <link rel="stylesheet" href="/styles/footer.css">
+</head>
+
+<body>
+
+  <header>
+    <h1>Travel App</h1>
+    <div class="line"></div>
+  </header>
+
+  <main class="main">
+    <form class="form">
+      <div class="form-group">
+        <label for="location">Destination</label>
+        <input id="location" type="text" value="" name="location">
+        <strong class="warning" id="location-required">Destination is required</strong>
+      </div>
+      <div class="form-group">
+        <label for="date">Arrival date</label>
+        <input type="date" id="date" name="date">
+        <strong class="warning" id="date-required">Date is required</strong>
+      </div>
+      <div class="form-group">
+        <input class="submit" type="submit" value="Get infomation" onclick="return Client.handleSubmit(event)">
+      </div>
+    </form>
+    <section id="results" class="results">
+      <div class="current-trip" id="current-trip">
+        <div class="info">
+          <div class="destination">
+            <p>Destination</p>
+            <p id="destination">...</p>
+          </div>
+          <div class="arrival-date">
+            <p>Arrival date</p>
+            <p id="arrival-date">...</p>
+          </div>
+        </div>
+        <div class="weather-forecast">
+          <img id="iconWeatherbitURL" alt="icon weather">
+          <div class="temp">
+            <p id="temp">...</p>
+          </div>
+          <div class="vertical">
+            <p id="relativeHumidity">...</p>
+            <p id="windSpeed">...</p>
+            <p id="description">...</p>
+          </div>
+        </div>
+        <div class="save-btn">
+          <button>Save trip</button>
+        </div>
+      </div>
+    </section>
+    <aside class="history">
+      <h2>History destination:</h2>
+    </aside>
+  </main>
+  <footer>
+    <div class="line"></div>
+    <h2>&copy Udacity</h2>
+    <div class="line"></div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      Client.setMinDate();
+      Client.setMaxDate();
+    });
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js');
+      });
+    }
+  </script>
+</body>
+
+</html>
