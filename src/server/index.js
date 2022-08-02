@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const axios = require("axios").default;
+const tripFn = require("./tripFn.js");
 dotenv.config();
 
 const app = express();
@@ -21,6 +22,38 @@ app.get("/", function (req, res) {
   res.sendFile("dist/index.html");
 });
 
+app.post("/saveTrip", async function (req, res) {
+  tripFn.addTrip(req.body);
+  res.send(tripFn.gettrips());
+});
+
+app.get("/gettrips", async function (req, res) {
+  res.send(tripFn.gettrips());
+});
+
+app.post("/removeTrip", async function (req, res) {
+  tripFn.removeTrip(({ destination, dateArrival } = req.body));
+  res.send(tripFn.gettrips());
+});
+
+app.post("/getgeonamesdata", async function (req, res) {
+  try {
+    const geonames = await axios({
+      method: "get",
+      url: "http://api.geonames.org/searchJSON",
+      params: {
+        maxRows: 2,
+        username: process.env.GEONAMES_USER,
+        q: req.body.q,
+        style: "short",
+      },
+    });
+    res.send(geonames.data);
+  } catch (error) {
+    console.error("something went wrong", error);
+  }
+});
+
 app.post("/infotrip", async function (req, res) {
   const startDate = new Date().toISOString().slice(0, 10);
   const endDate = req.body.dateArrival;
@@ -31,7 +64,6 @@ app.post("/infotrip", async function (req, res) {
       ? "http://api.weatherbit.io/v2.0/current"
       : "https://api.weatherbit.io/v2.0/forecast/daily";
 
-  console.log("diffInDays ", diffInDays);
   try {
     const [geonamesData, pixabayData] = await Promise.all([
       axios({
@@ -56,6 +88,10 @@ app.post("/infotrip", async function (req, res) {
       }),
     ]);
 
+    if (geonamesData.data.totalResultsCount === 0) {
+      return res.status(404).send();
+    }
+
     const weatherbitData = await axios({
       method: "get",
       url: urlForecast,
@@ -66,17 +102,18 @@ app.post("/infotrip", async function (req, res) {
       },
     });
 
-    // console.log("geonames ", geonamesData.data.geonames[0]);
-    // console.log("pixabayData ", pixabayData.data);
-    // console.log("weatherbitData ", weatherbitData.data);
-
     const targetWeatherbitData =
       diffInDays <= 7
         ? weatherbitData.data.data[0]
         : weatherbitData.data.data[diffInDays];
+    const defaultImage =
+      "https://pixabay.com/get/g4d697ceca02a3e4b6bd463c98150a580a32b792a07989e5c284ff4c61a4bf2a94b17b9819c34ce4c860420870b44c8acda32fdf2aac9730237e294e2e72d5498_1280.jpg";
     const destination = req.body.location;
     const dateArrival = req.body.dateArrival;
-    const imgURL = pixabayData.data.hits[0].largeImageURL;
+    const imgURL =
+      pixabayData.data.total === 0
+        ? defaultImage
+        : pixabayData.data.hits[0].largeImageURL;
     const iconWeatherbitURL = `https://www.weatherbit.io/static/img/icons/${targetWeatherbitData.weather.icon}.png`;
     const temp = targetWeatherbitData.temp;
     const description = targetWeatherbitData.weather.description;
@@ -87,29 +124,16 @@ app.post("/infotrip", async function (req, res) {
       imgURL,
       destination,
       dateArrival,
-
       iconWeatherbitURL,
       temp,
       relativeHumidity,
       windSpeed,
       description,
-
-      targetWeatherbitData,
     });
   } catch (error) {
     console.error("something went wrong", error);
   }
 });
-
-const atrip = {
-  destination: "",
-  dateArrival: "",
-  imgURL: "",
-  iconURL: "",
-  destination: "",
-  temp: "",
-  description: "",
-};
 
 let port = process.env.PORT || 8081;
 // designates what port the app will listen to for incoming requests

@@ -14,6 +14,16 @@ input {
   position: relative;
 }
 
+#location,
+#date,
+.submit {
+  font-size: 1.2rem;
+}
+
+#date::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
 .warning {
   visibility: hidden;
   opacity: 0;

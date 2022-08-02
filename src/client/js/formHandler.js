@@ -1,18 +1,20 @@
+let currentTrip = null;
 async function handleSubmit(event) {
   event.preventDefault();
   const location = document.getElementById("location").value;
   const dateArrival = document.getElementById("date").value;
-
   if (Client.isFormInvalid()) {
     return;
   }
 
-  const inFoTripData = await Client.getInFoTrip(
-    "http://localhost:8081/infotrip",
-    { location, dateArrival }
-  );
+  const inFoTripData = await Client.getInFoTrip({ location, dateArrival });
 
-  console.log("NODE data ", inFoTripData);
+  if (inFoTripData.response && inFoTripData.response.status === 404) {
+    Client.isFormInvalid(inFoTripData.response.statusText);
+    return;
+  }
+
+  currentTrip = inFoTripData;
 
   document.getElementById(
     "results"
@@ -40,30 +42,6 @@ async function handleSubmit(event) {
   document.getElementById(
     "description"
   ).textContent = `description: ${inFoTripData.description}`;
-
-  // if (sentimentRes.status.msg !== "OK") {
-  //   content = `<h4>Error: ${sentimentRes.status.msg}</h4>`;
-  // } else {
-  //   content =
-  //     `<h3>subjectivity: ${sentimentRes.subjectivity}</h3>` +
-  //     sentimentRes.sentence_list
-  //       .map((s) => {
-  //         return `<div class="sentence">
-  //     <p>Sentence: ${s.text}</p>
-  //     <p>Agreement: ${s.agreement}</p>
-  //     <p>Confidence: ${s.confidence}</p>
-  //   </div>`;
-  //       })
-  //       .join("");
-  // }
-
-  // document.getElementById("results").innerHTML = content;
 }
 
-const testJest = {
-  play() {
-    return true;
-  },
-};
-
-export { handleSubmit, testJest };
+export { handleSubmit, currentTrip };

@@ -1,4 +1,11 @@
-function isFormInvalid() {
+function isFormInvalid(error) {
+  if (error !== undefined) {
+    document.getElementById(`system-error`).innerText = error;
+    document.getElementById(`system-error`).classList.add("visible");
+  } else {
+    document.getElementById(`system-error`).classList.remove("visible");
+  }
+
   const supportValidation = {
     location: {
       invalid: true,
