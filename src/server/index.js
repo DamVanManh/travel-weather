@@ -42,7 +42,7 @@ app.post("/getgeonamesdata", async function (req, res) {
       method: "get",
       url: "http://api.geonames.org/searchJSON",
       params: {
-        maxRows: 2,
+        maxRows: 10,
         username: process.env.GEONAMES_USER,
         q: req.body.q,
         style: "short",
