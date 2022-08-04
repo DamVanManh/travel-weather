@@ -5,14 +5,20 @@ import {
   getTrips,
   getGeonamesData,
 } from "./js/api";
-import { handleSubmit, currentTrip } from "./js/formHandler";
+import {
+  handleGetInfomation,
+  currentTrip,
+  handlePressEnter,
+} from "./js/formHandler";
 import { isFormInvalid, setMinDate, setMaxDate } from "./js/validate";
 import { saveTripFn } from "./js/saveTrip";
 import { renderTrips } from "./js/renderTrips";
 import { loadTrips } from "./js/loadTrips";
 import { removeTripFN } from "./js/removeTrip";
-import { autocomplete, timeOut } from "./js/autocomplete";
+import { autocomplete } from "./js/autocomplete";
+import { showLoading } from "./js/loader";
 
+import "./styles/loader.scss";
 import "./styles/resets.scss";
 import "./styles/main.scss";
 import "./styles/base.scss";
@@ -29,7 +35,7 @@ export {
   getGeonamesData,
   saveTripFn,
   removeTripFN,
-  handleSubmit,
+  handleGetInfomation,
   isFormInvalid,
   setMinDate,
   setMaxDate,
@@ -37,5 +43,6 @@ export {
   renderTrips,
   loadTrips,
   autocomplete,
-  timeOut,
+  handlePressEnter,
+  showLoading,
 };

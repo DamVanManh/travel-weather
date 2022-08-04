@@ -1,13 +1,28 @@
+/**
+ * @description This variable saves data of currentTrip, we need to export this to use in saveTrip function
+ */
 let currentTrip = null;
-async function handleSubmit(event) {
-  event.preventDefault();
-  const location = document.getElementById("location").value;
-  const dateArrival = document.getElementById("date").value;
+
+/**
+ * @description Get infomation of destination and update UI
+ * @param {event} event - event of button
+ */
+async function handleGetInfomation(event) {
+  if (event) {
+    event.preventDefault();
+  }
+  // check validation
   if (Client.isFormInvalid()) {
     return;
   }
 
+  Client.showLoading(true);
+
+  const dateArrival = document.getElementById("date").value;
+  const location = document.getElementById("location").value;
   const inFoTripData = await Client.getInFoTrip({ location, dateArrival });
+
+  Client.showLoading(false);
 
   if (inFoTripData.response && inFoTripData.response.status === 404) {
     Client.isFormInvalid(inFoTripData.response.statusText);
@@ -44,4 +59,14 @@ async function handleSubmit(event) {
   ).textContent = `description: ${inFoTripData.description}`;
 }
 
-export { handleSubmit, currentTrip };
+function handlePressEnter() {
+  const input = document.getElementById("location");
+  input.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      document.getElementById("submit").click();
+    }
+  });
+}
+
+export { handlePressEnter, handleGetInfomation, currentTrip };

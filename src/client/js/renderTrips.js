@@ -27,6 +27,7 @@ function renderTrips(trips) {
       </div>
     </div>
     <div class="remove-btn">
+      <!-- stored information about the trip, it determined what trip we has click -->
       <button data-idtrip="${trip.destination}_${trip.dateArrival}" onclick="return Client.removeTripFN(event)">Remove trip</button>
     </div>
   </div>

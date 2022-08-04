@@ -36,6 +36,7 @@ app.post("/removeTrip", async function (req, res) {
   res.send(tripFn.gettrips());
 });
 
+// this endpoint use for autocomplete function
 app.post("/getgeonamesdata", async function (req, res) {
   try {
     const geonames = await axios({
@@ -106,8 +107,9 @@ app.post("/infotrip", async function (req, res) {
       diffInDays <= 7
         ? weatherbitData.data.data[0]
         : weatherbitData.data.data[diffInDays];
+    // using default URL image if pixabay not return URL image
     const defaultImage =
-      "https://pixabay.com/get/g4d697ceca02a3e4b6bd463c98150a580a32b792a07989e5c284ff4c61a4bf2a94b17b9819c34ce4c860420870b44c8acda32fdf2aac9730237e294e2e72d5498_1280.jpg";
+      "https://images.pexels.com/photos/15286/pexels-photo.jpg";
     const destination = req.body.location;
     const dateArrival = req.body.dateArrival;
     const imgURL =

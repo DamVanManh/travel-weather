@@ -1,3 +1,8 @@
+/**
+ * @description Validate form end warning in UI
+ * @param {string} error - error return from api
+ * @returns {boolean} - form is invalid or valid
+ */
 function isFormInvalid(error) {
   if (error !== undefined) {
     document.getElementById(`system-error`).innerText = error;
@@ -31,11 +36,16 @@ function isFormInvalid(error) {
   } else return false;
 }
 
+/**
+ * @description Limited the minimum date can be selected because we cann't go to the past
+ */
 function setMinDate() {
   const minDate = new Date().toISOString().slice(0, 10);
   document.getElementById("date").setAttribute("min", minDate);
 }
-
+/**
+ * @description Limited the maximum date can be selected because the api does not support weather forecast beyond 16 days
+ */
 function setMaxDate() {
   const currentDate = new Date();
   currentDate.setDate(currentDate.getDate() + 15);

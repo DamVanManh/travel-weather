@@ -1,14 +1,10 @@
 const horsey = require("horsey");
-let timeOut;
-const waitFor = (delay) =>
-  new Promise((resolve) => {
-    timeOut = setTimeout(resolve, delay);
-  });
+/**
+ * @description Handle autocomplete function of the input form
+ */
 async function autocomplete() {
   horsey(document.getElementById("location"), {
     source: async (data, done) => {
-      clearTimeout(Client.timeOut);
-      await waitFor(300);
       const q = document.getElementById("location").value;
       const source = await Client.getGeonamesData(q);
 
@@ -22,4 +18,4 @@ async function autocomplete() {
   });
 }
 
-export { autocomplete, timeOut };
+export { autocomplete };
