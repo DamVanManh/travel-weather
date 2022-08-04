@@ -43,7 +43,7 @@ app.post("/getgeonamesdata", async function (req, res) {
       url: "http://api.geonames.org/searchJSON",
       params: {
         maxRows: 10,
-        username: 'hnammad7',
+        username: "hnammad7",
         q: req.body.q,
         style: "short",
       },
@@ -71,7 +71,7 @@ app.post("/infotrip", async function (req, res) {
         url: "http://api.geonames.org/searchJSON",
         params: {
           maxRows: 1,
-          username: 'hnammad7",
+          username: "hnammad7",
           name: req.body.location,
         },
       }),
@@ -79,7 +79,7 @@ app.post("/infotrip", async function (req, res) {
         method: "get",
         url: "https://pixabay.com/api/",
         params: {
-          key: '28823713-2f747a9b8b37e399125fb1808',
+          key: "28823713-2f747a9b8b37e399125fb1808",
           q: req.body.location,
           image_type: "photo",
           editors_choice: true,
@@ -98,7 +98,7 @@ app.post("/infotrip", async function (req, res) {
       params: {
         lat: geonamesData.data.geonames[0].lat,
         lon: geonamesData.data.geonames[0].lng,
-        key: '5abfee1dddf549abb3a94b84fe5c9d35',
+        key: "5abfee1dddf549abb3a94b84fe5c9d35",
       },
     });
 
